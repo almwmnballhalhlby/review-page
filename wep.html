@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة السمعة</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    .hidden { display: none; }
+    .button { padding: 10px 20px; font-size: 16px; margin: 5px; cursor: pointer; }
+    .star { font-size: 24px; cursor: pointer; color: gray; }
+    .selected { color: gold; }
+  </style>
+</head>
+<body>
+
+  <h2>هل توصي بنا لأصدقائك؟</h2>
+  <button class="button" onclick="showKeywordSelection()">نعم</button>
+  <button class="button" onclick="showDissatisfactionForm()">لا</button>
+
+  <!-- اختيار الكلمات الرئيسية -->
+  <div id="keyword-selection" class="hidden">
+    <h3>اختر سبب التوصية:</h3>
+    <label><input type="checkbox" name="keyword" value="وسائل الراحة"> وسائل الراحة</label>
+    <label><input type="checkbox" name="keyword" value="الجو"> الجو</label>
+    <label><input type="checkbox" name="keyword" value="التنظيف"> التنظيف</label>
+    <label><input type="checkbox" name="keyword" value="الطعام"> الطعام</label>
+    <label><input type="checkbox" name="keyword" value="الترفيه"> الترفيه</label>
+    <br><button class="button" onclick="submitKeywords()">موافق</button>
+  </div>
+
+  <!-- التقييم بالنجوم -->
+  <div id="rating-section" class="hidden">
+    <h3>يرجى تقييم تجربتك:</h3>
+    <span class="star" onclick="setRating(1)">&#9733;</span>
+    <span class="star" onclick="setRating(2)">&#9733;</span>
+    <span class="star" onclick="setRating(3)">&#9733;</span>
+    <span class="star" onclick="setRating(4)">&#9733;</span>
+    <span class="star" onclick="setRating(5)">&#9733;</span>
+  </div>
+
+  <!-- نموذج الشكوى -->
+  <div id="dissatisfaction-form" class="hidden">
+    <h3>أخبرنا لماذا لم تكن راضيًا عن الخدمة:</h3>
+    <textarea id="dissatisfaction-reason" rows="4" cols="50"></textarea><br>
+    <button class="button" onclick="submitDissatisfaction()">إرسال</button>
+  </div>
+
+  <!-- رسالة الشكر -->
+  <div id="thank-you-message" class="hidden">
+    <h3>شكرًا لتقييمك!</h3>
+    <p>تم إرسال مراجعتك بنجاح.</p>
+  </div>
+
+  <script>
+    function showKeywordSelection() {
+      document.getElementById("keyword-selection").classList.remove("hidden");
+    }
+
+    function submitKeywords() {
+      document.getElementById("keyword-selection").classList.add("hidden");
+      document.getElementById("rating-section").classList.remove("hidden");
+    }
+
+    function setRating(stars) {
+      const starElements = document.querySelectorAll(".star");
+      starElements.forEach((star, index) => {
+        if (index < stars) {
+          star.classList.add("selected");
+        } else {
+          star.classList.remove("selected");
+        }
+      });
+      if (stars < 5) {
+        showDissatisfactionForm();
+      } else {
+        showThankYouMessage();
+      }
+    }
+
+    function showDissatisfactionForm() {
+      document.getElementById("rating-section").classList.add("hidden");
+      document.getElementById("dissatisfaction-form").classList.remove("hidden");
+    }
+
+    function submitDissatisfaction() {
+      // هنا يتم إرسال البريد الإلكتروني لشكوى العميل
+      document.getElementById("dissatisfaction-form").classList.add("hidden");
+      showThankYouMessage();
+    }
+
+    function showThankYouMessage() {
+      document.getElementById("thank-you-message").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
